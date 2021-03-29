@@ -1,9 +1,14 @@
-# Project
+# Marketplace VM Samples
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+This repo shows how to build a Virtual Machine for Linux or Windows and is limited to the
+basic steps required to make that image ready for the Azure Marketplace. The images are placed into 
+a [Shared Image Gallery](https://docs.microsoft.com/azure/virtual-machines/shared-image-galleries) for later
+consumption into a Marketplace VM plan. 
 
-As the maintainer of this project, please make a few updates:
+When publishing the image, make sure that the Shared Image Gallery is under the same AAD tenant used to
+authenticate users for the related Partner Center account. When selecting an image, the Partner Center 
+UI only has access to subscriptions associated with that one tenant ID. 
+
 
 - Improving this README.MD file to provide a great experience
 - Updating SUPPORT.MD with content about this project's support experience
