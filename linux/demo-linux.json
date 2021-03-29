@@ -1,0 +1,53 @@
+{
+  "builders": [{
+    "type": "azure-arm",
+
+    "subscription_id": "{{user `azure_subscription_id`}}",
+
+    "os_type": "Linux",
+    "os_disk_size_gb": "{{user `os_disk_size`}}",
+    "managed_image_name": "{{user `image_name`}}",
+    "managed_image_resource_group_name": "{{user `resource_group_name`}}",
+    "image_publisher": "{{user `vm_publisher`}}",
+    "image_offer": "{{user `vm_offer`}}",
+    "image_sku": "{{user `vm_plan`}}",
+
+    "shared_image_gallery_destination": {
+        "subscription": "{{user `azure_subscription_id`}}",
+        "resource_group": "{{user `resource_group_name`}}",
+        "gallery_name": "{{user `azure_shared_image_gallery`}}",
+        "image_name": "{{user `image_name`}}",
+        "image_version": "{{user `image_version`}}",
+        "replication_regions": ["{{user `replication_region_1`}}", "{{user `replication_region_2`}}", "{{user `replication_region_3`}}"]
+    },
+
+    "azure_tags": {
+        "dept": "Engineering",
+        "task": "Image deployment"
+    },
+
+    "vm_size": "Standard_DS2_v2",
+    "build_resource_group_name": "{{user `resource_group_name`}}",
+    "cloud_environment_name": "Public"
+  }],
+  "provisioners": [
+    {
+        "type": "file",
+        "source": "../linux",
+        "destination": "/tmp"
+    },
+    {
+        "type": "file",
+        "source": "./packvm.sh",
+        "destination": "/tmp/packvm.sh"
+    },
+    {
+        "type": "shell",
+        "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
+        "inline": [
+            "cp -p -r /tmp/linux /bin/demo",
+            "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
+        ],
+        "inline_shebang": "/bin/sh -x -e"    
+    }]  
+}
