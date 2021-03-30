@@ -1,14 +1,54 @@
-# Project
+# Marketplace VM Samples
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+This repo shows how to build a Virtual Machine for Linux or Windows and is limited to the
+basic steps required to make that image ready for the Azure Marketplace. The images are placed into 
+a [Shared Image Gallery](https://docs.microsoft.com/azure/virtual-machines/shared-image-galleries) for later
+consumption into a Marketplace VM plan. 
 
-As the maintainer of this project, please make a few updates:
+When publishing the image, make sure that the Shared Image Gallery is under the same AAD tenant used to
+authenticate users for the related Partner Center account. When selecting an image, the Partner Center 
+UI only has access to subscriptions associated with that one tenant ID. 
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+
+# Getting started
+
+Required software:
+
+* [Packer](https://www.packer.io/downloads): Used to create the Virtual Machines.
+
+* [Terraform](https://www.terraform.io/downloads.html): Used for setting up any VM test environments.
+
+Both software packages should be available on your path. On Linux systems, place packer and terraform into the /usr/bin
+folder. On Windows Systems, make sure your path variable is updated to point to the location(s) where you
+placed Packer and Terraform. Since these both run as standalone executables, you can place both files
+into the same directory.
+
+
+## Variables and setup
+
+The scripts load their variables from a file called variables.conf. Under bash, this file can be run as a shell
+script to introduce the values as bash accessible variables. All the .sh files take advantage of this fact.
+
+For running the same scripts on Windows, variables.conf is sent to a dictionary for use by PowerShell scripts. 
+
+
+## Building images
+
+There are two folders:
+
+* [Linux](./linux): Contains scripts to demonstrate how to build a common Linux image. While Ubuntu is used here,
+the script can be modified to pick a different flavor of Linux: Suse, RedHat, CentOS, Debian, etc. 
+
+* [Windows](./windows): Contains script to demonstrate how to build a common Windows image. This example demonstrates 
+how to use Windows Server 2019. The same script should work when configuring other versions of Windows as well. 
+
+
+Each folder contains:
+
+* Instructions on how to update the SKU used for the base image.
+
+* Assets to validate the image.
+
 
 ## Contributing
 
