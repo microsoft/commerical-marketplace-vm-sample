@@ -1,5 +1,5 @@
 $var_file='demo-windows-variables.json'
-$packer_file='demo-windows.json'
+$packer_file='demo-windows.pkr.hcl'
 $file_data = Get-Content $var_file
 $config = $file_data | ConvertFrom-Json 
 
@@ -13,7 +13,7 @@ $image_description = $config.image_description
 
 Write-Host "Logging in"
 
-az login 
+az login --service-principal -u $config.service_principal_app_id_uri -p $config.service_principal_client_secret --tenant $config.service_principal_tenant_id
 
 az account get-access-token
 $accountJson = az account get-access-token | ConvertFrom-Json
@@ -62,7 +62,3 @@ $path = $current_directory.Path
 Write-Host "Building packer image"
 packer build -var-file="$path\$var_file" -force "$path\$packer_file"
 
-New-AzResourceGroupDeployment -ResourceGroupName scswindemo `
-     -TemplateFile .\template\template.json `
-     -TemplateParameterFile .\template\parameters.json `
-     -Mode Incremental 

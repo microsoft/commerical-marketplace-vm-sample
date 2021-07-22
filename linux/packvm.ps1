@@ -1,5 +1,5 @@
 $var_file='demo-linux-variables.json'
-$packer_file='demo-linux.json'
+$packer_file='demo-linux.pkr.hcl'
 $file_data = Get-Content $var_file
 $config = $file_data | ConvertFrom-Json 
 
@@ -13,12 +13,10 @@ $image_description = $config.image_description
 
 Write-Host "Logging in"
 
-az login 
-
+az login --service-principal -u $config.service_principal_app_id_uri -p $config.service_principal_client_secret --tenant $config.service_principal_tenant_id
 az account get-access-token
 $accountJson = az account get-access-token | ConvertFrom-Json
 Write-Host $accountJson.accessToken 
-
  
 Connect-AzAccount -AccessToken $accountJson.accessToken -AccountId $account_id 
 Select-AzSubscription $azure_subscription_id
